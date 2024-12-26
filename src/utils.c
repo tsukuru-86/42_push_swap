@@ -6,7 +6,7 @@
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 04:24:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/12/26 17:38:51 by tsukuru          ###   ########.fr       */
+/*   Updated: 2024/12/26 18:16:29 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,26 @@ int is_array_sorted(t_stacks *s)
     return 1;
 }
 
+//stackAとBを確保
+void initialize_stacks(int argc, char **argv, t_stacks *s)
+{
+    (void)argv;
+    if (argc < 2)
+        error_outputs_and_free(s, "Error\n");
+    
+    s->a_size = count_box(s->join_args, ' ');
+    if (s->a_size == 0)
+        error_outputs_and_free(s, "Error\n");
+
+    s->a = malloc(s->a_size * sizeof *s->a);
+    if (s->a == NULL)
+        error_outputs_and_free(s, "Error\n");
+    s->b_size = s->a_size;
+    s->b = malloc(s->b_size * sizeof *s->b);
+    if (s->b == NULL)
+        error_outputs_and_free(s, "Error\n");
+}
+
 //文字列を　"77 6 7878 8 23 7"のような数値に変換
 void atoi_numbers(t_stacks *s)
 {
@@ -71,22 +91,36 @@ void atoi_numbers(t_stacks *s)
     free(tmp);
 }
 
-//stackAとBを確保
-void initialize_stacks(int argc, char **argv, t_stacks *s)
+void create_index(t_stacks *s)
 {
-    (void)argv;
-    if (argc < 2)
-        error_outputs_and_free(s, "Error\n");
+    int i;
+    int j;
+    int k;
+    char *new_a;
     
-    s->a_size = count_box(s->join_args, ' ');
-    if (s->a_size == 0)
+    new_a = malloc(s->a_size * sizeof *new_a);
+    if (new_a == NULL)
         error_outputs_and_free(s, "Error\n");
-
-    s->a = malloc(s->a_size * sizeof *s->a);
-    if (s->a == NULL)
-        error_outputs_and_free(s, "Error\n");
-    s->b_size = s->a_size;
-    s->b = malloc(s->b_size * sizeof *s->b);
-    if (s->b == NULL)
-        error_outputs_and_free(s, "Error\n");
+        
+    i = 0;
+    while (i < s->a_size)
+    {
+        j = 0;
+        k = 0;
+        while (j < s->a_size)
+        {
+            if (s->a[i] > s->a[j])
+                k++;
+            j++;
+        }
+        new_a[i] = k;
+        i++;
+    }
+    i = 0;
+    while (i < s->a_size)
+    {
+        s->a[i] = new_a[i];
+        i++;
+    }
+    free(new_a);
 }

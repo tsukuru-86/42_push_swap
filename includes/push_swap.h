@@ -6,7 +6,7 @@
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 20:50:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/12/26 17:39:25 by tsukuru          ###   ########.fr       */
+/*   Updated: 2024/12/26 18:19:25 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void swap(char *str, int *array, int size);
 void push(char *str, t_stacks *s);
 void rotate(int *array, int size, char *direction, char *list);
 void	initialize_stacks(int argc, char **argv, t_stacks *s);
+void create_index(t_stacks *s);
 
 
 

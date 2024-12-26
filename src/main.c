@@ -6,7 +6,7 @@
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 18:39:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/12/26 17:42:18 by tsukuru          ###   ########.fr       */
+/*   Updated: 2024/12/26 18:19:00 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int main(int argc, char**argv)
     join_args(argc, argv, s);//文字列を"77 6 7878 8 23 7"のような一つの文字列に
     initialize_stacks(argc, argv, s);//stackAとBを確保
     atoi_numbers(s);//文字列を　77 6 7878 8 23 7のような数値に変換しそれぞれ挿入
-    //indexを作成
+    create_index(s);//indexを作成
     //とりあえずソートするアルゴリズム書いてみる
         //文字列の数によって条件分岐？
         //各条件ごとのソート
