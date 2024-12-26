@@ -6,7 +6,7 @@
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 20:50:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/12/02 20:23:53 by tsukuru          ###   ########.fr       */
+/*   Updated: 2024/12/26 17:39:25 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,25 @@ typedef struct s_stacks
     int *b;
     int a_size;
     int b_size;
+    char *join_args;
 }t_stacks;
 
 #include "../libft/libft.h"
 # include <stdbool.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+void check_numbers(t_stacks *s, int i);
+int is_array_sorted(t_stacks *s);
+void error_outputs_and_free(t_stacks *s, char *msg);
+void atoi_numbers(t_stacks *s);
+void swap(char *str, int *array, int size);
+void push(char *str, t_stacks *s);
+void rotate(int *array, int size, char *direction, char *list);
+void	initialize_stacks(int argc, char **argv, t_stacks *s);
+
+
+
+
 
 #endif
