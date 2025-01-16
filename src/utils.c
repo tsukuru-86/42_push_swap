@@ -6,7 +6,7 @@
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 04:24:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/12/26 18:16:29 by tsukuru          ###   ########.fr       */
+/*   Updated: 2025/01/16 19:03:58 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void check_numbers(t_stacks *s, int i)
             while (j < s->a_size)
             {
                 if (s->a[i] == s->a[j])
-                    error_outputs_and_free(s, "Error\n");
+                    error_outputs_and_free(s, "Error: Duplicate numbers found\n");
                 j++;
             }
             i++;
@@ -43,10 +43,11 @@ int is_array_sorted(t_stacks *s)
     int i;
     
     i = 0;
-    while(i < s->a_size)
+    while(i < s->a_size-1)
     {
-        if (s->a[i] > s->a[i + 1])
-            return 0;
+        if (s->a[i] > s->a[i + 1]){
+            return 0;   
+        }
         i++;
     }
     return 1;
@@ -66,7 +67,6 @@ void initialize_stacks(int argc, char **argv, t_stacks *s)
     s->a = malloc(s->a_size * sizeof *s->a);
     if (s->a == NULL)
         error_outputs_and_free(s, "Error\n");
-    s->b_size = s->a_size;
     s->b = malloc(s->b_size * sizeof *s->b);
     if (s->b == NULL)
         error_outputs_and_free(s, "Error\n");
