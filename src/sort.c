@@ -6,7 +6,7 @@
 /*   By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 18:42:26 by tsukuru           #+#    #+#             */
-/*   Updated: 2025/02/02 14:46:21 by tkomai           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:56:48 by tkomai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	sort_four_five_elements(t_stacks *s)
 {
 	while (s->b_size <= 1)
 	{
-		while (s->a[0] > s->a[1] || (s->a_size > 2 && s->a[0] > s->a[2]) ||
-				(s->a_size > 3 && s->a[0] > s->a[3]) ||
-				(s->a_size > 4 && s->a[0] > s->a[4]))
+		while (s->a[0] > s->a[1] || (s->a_size > 2 && s->a[0] > s->a[2])
+			|| (s->a_size > 3 && s->a[0] > s->a[3]) || (s->a_size > 4
+				&& s->a[0] > s->a[4]))
 		{
 			rotate(s->a, s->a_size, "up", "a");
 		}
@@ -47,33 +47,43 @@ void	sort_four_five_elements(t_stacks *s)
 	push("pa", s);
 }
 
-// アップグレードバージョン　これで完成とも言える
-void radix_sort(t_stacks *s)
+static int	get_max_bits(t_stacks *s)
 {
-    int i, j;
-    int max_bits;
-    int size;
-    int max_val;
+	int	max_bits;
+	int	size;
 
-    /* 最大値は正規化済みなので s->a_size - 1 */
-    max_val = s->a_size - 1;
-    max_bits = 0;
-    while ((max_val >> max_bits) != 0)
-        max_bits++;
+	max_bits = 0;
+	size = s->a_size - 1;
+	while ((size >> max_bits) != 0)
+		max_bits++;
+	return (max_bits);
+}
 
-    for (j = 0; j < max_bits; j++)
-    {
-        size = s->a_size;
-        for (i = 0; i < size; i++)
-        {
-            if (((s->a[0] >> j) & 1) == 1)
-                rotate(s->a, s->a_size, "up", "a");
-            else
-                push("pb", s);
-        }
-        while (s->b_size > 0)
-            push("pa", s);
-    }
+void	radix_sort(t_stacks *s)
+{
+	int	i;
+	int	j;
+	int	size;
+	int	max_bits;
+
+	max_bits = get_max_bits(s);
+	j = 0;
+	while (j < max_bits && !is_array_sorted(s))
+	{
+		size = s->a_size;
+		i = 0;
+		while (i < size)
+		{
+			if (((s->a[0] >> j) & 1) == 0)
+				push("pb", s);
+			else
+				rotate(s->a, s->a_size, "up", "a");
+			i++;
+		}
+		while (s->b_size > 0)
+			push("pa", s);
+		j++;
+	}
 }
 
 // //元祖　サンプル元と同じ
@@ -111,9 +121,3 @@ void radix_sort(t_stacks *s)
 // 				push("pb", s);
 // 			else
 // 				rotate(s->a, s->a_size, "up", "a");
-// 		}
-// 		radix_sort_stack_b(s, s->b_size, bit_size, j + 1);
-// 	}
-// 	while (s->b_size != 0)
-// 		push("pa", s);
-// }
