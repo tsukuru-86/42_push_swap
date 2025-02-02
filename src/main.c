@@ -83,8 +83,10 @@ int main(int argc, char**argv)
         sort_three_elements(s);
     if (s->a_size == 4 || s->a_size == 5)
         sort_four_five_elements(s);
-    if (s->a_size >= 6)
+    if (s->a_size >= 6){
         radix_sort(s);
+        // chunk_sort(s);
+    }
     
     return 0;
 }
