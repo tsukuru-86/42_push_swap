@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 20:50:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2025/01/31 20:20:49 by tsukuru          ###   ########.fr       */
+/*   Updated: 2025/02/02 14:41:25 by tkomai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	sort_three_elements(t_stacks *s);
 void	sort_four_five_elements(t_stacks *s);
 void	radix_sort(t_stacks *s);
 void chunk_sort(t_stacks *s);
+int count_box(char *str, char c);
 
 
 #endif
