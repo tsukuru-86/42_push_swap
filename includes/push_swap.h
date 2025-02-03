@@ -6,7 +6,7 @@
 /*   By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 20:50:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2025/02/03 17:04:10 by tkomai           ###   ########.fr       */
+/*   Updated: 2025/02/04 04:52:59 by tkomai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ void		create_index(t_stacks *s);
 void		sort_three_elements(t_stacks *s);
 void		sort_four_five_elements(t_stacks *s);
 void		radix_sort(t_stacks *s);
-int			count_box(char *str, char c);
+int			count_numbers(char *str, char c);
 int			ft_atol(const char *n, t_stacks *s);
+char		*join_args_helper(char *tmp2, char *argv_i, t_stacks *s);
+void		free_stacks(t_stacks *s);
 
 #endif
