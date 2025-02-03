@@ -6,7 +6,7 @@
 /*   By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 20:50:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2025/02/02 18:00:39 by tkomai           ###   ########.fr       */
+/*   Updated: 2025/02/03 17:04:10 by tkomai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PUSH_SWAP_H
 
 # include "../libft/libft.h"
+# include <limits.h>
 # include <stdbool.h>
 # include <stdlib.h>
 # include <unistd.h>

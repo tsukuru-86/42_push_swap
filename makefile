@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+         #
+#    By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/02 17:19:45 by tsukuru           #+#    #+#              #
-#    Updated: 2025/01/14 16:20:10 by tsukuru          ###   ########.fr        #
+#    Updated: 2025/02/03 17:20:35 by tkomai           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,9 @@ NAME       = push_swap
 # **************************************************************************** #
 
 SRC = src/main.c \
-      src/utils.c \
-	  src/sort.c \
+      src/utils_init.c \
+      src/utils_array.c \
+      src/sort.c \
       src/ft_command.c \
       libft/ft_atoi.c \
       libft/ft_memmove.c \
