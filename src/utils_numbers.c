@@ -6,7 +6,7 @@
 /*   By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:17:12 by tkomai            #+#    #+#             */
-/*   Updated: 2025/02/04 05:02:27 by tkomai           ###   ########.fr       */
+/*   Updated: 2025/02/04 05:39:00 by tkomai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,14 @@ int	ft_atol(const char *str, t_stacks *s)
 	num = 0;
 	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
 		i++;
-	if (str[i] == '-' && str[i++])
-		sign = -1;
-	else if (str[i] == '+')
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign = -1;
 		i++;
+		if (!str[i] || str[i] < '0' || str[i] > '9')
+			error_outputs_and_free(s, "Error\n");
+	}
 	while (str[i])
 	{
 		if (str[i] < '0' || str[i] > '9' || (sign == 1 && (num > INT_MAX / 10
