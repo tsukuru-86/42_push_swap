@@ -6,7 +6,7 @@
 #    By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/02 17:19:45 by tsukuru           #+#    #+#              #
-#    Updated: 2025/02/04 04:42:34 by tkomai           ###   ########.fr        #
+#    Updated: 2025/02/04 05:05:50 by tkomai           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@
 # **************************************************************************** #
 
 CC         = gcc
-CFLAGS     = -Wall -Wextra -Werror
+CFLAGS     = -Wall -Wextra -Werror -g -fsanitize=address
 RM         = rm -rf
 
 # --- libft に関する設定 ---
