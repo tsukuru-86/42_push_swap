@@ -6,7 +6,7 @@
 /*   By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:17:12 by tkomai            #+#    #+#             */
-/*   Updated: 2025/02/04 05:39:00 by tkomai           ###   ########.fr       */
+/*   Updated: 2025/02/07 12:26:45 by tkomai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,6 @@ void	check_numbers(t_stacks *s, int i)
 		exit(0);
 }
 
-int	is_array_sorted(t_stacks *s)
-{
-	int	i;
-
-	i = 0;
-	while (i < s->a_size - 1)
-	{
-		if (s->a[i] > s->a[i + 1])
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 void	create_index(t_stacks *s)
 {
 	int	i;
@@ -88,6 +74,18 @@ void	create_index(t_stacks *s)
 	free(tmp);
 }
 
+static void	check_overflow(long num, int sign, char c, t_stacks *s)
+{
+	if (c < '0' || c > '9')
+		error_outputs_and_free(s, "Error\n");
+	if (sign == 1 && (num > INT_MAX / 10
+			|| (num == INT_MAX / 10 && c > '7')))
+		error_outputs_and_free(s, "Error\n");
+	if (sign == -1 && (num > -(INT_MIN / 10)
+			|| (num == -(INT_MIN / 10) && c > '8')))
+		error_outputs_and_free(s, "Error\n");
+}
+
 int	ft_atol(const char *str, t_stacks *s)
 {
 	int		i;
@@ -109,12 +107,8 @@ int	ft_atol(const char *str, t_stacks *s)
 	}
 	while (str[i])
 	{
-		if (str[i] < '0' || str[i] > '9' || (sign == 1 && (num > INT_MAX / 10
-					|| (num == INT_MAX / 10 && str[i] > '7'))) || (sign == -1
-				&& (num > -(INT_MIN / 10) || (num == -(INT_MIN / 10)
-						&& str[i] > '8'))))
-			error_outputs_and_free(s, "Error\n");
+		check_overflow(num, sign, str[i], s);
 		num = num * 10 + (str[i++] - '0');
 	}
-	return ((int)(num * sign));
+	return (num * sign);
 }

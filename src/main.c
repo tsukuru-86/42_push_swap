@@ -6,7 +6,7 @@
 /*   By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 14:27:26 by tkomai            #+#    #+#             */
-/*   Updated: 2025/02/04 04:40:39 by tkomai           ###   ########.fr       */
+/*   Updated: 2025/02/07 11:48:59 by tkomai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,11 @@ int	main(int argc, char **argv)
 
 	if (argc < 2)
 		return (0);
+	if (argv[1][0] == '"' && argv[1][ft_strlen(argv[1]) - 1] != '"')
+	{
+		write(2, "Error\n", 6);
+		return (1);
+	}
 	s = malloc(sizeof(t_stacks));
 	if (!s)
 	{

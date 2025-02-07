@@ -6,7 +6,7 @@
 /*   By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 20:50:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2025/02/04 04:52:59 by tkomai           ###   ########.fr       */
+/*   Updated: 2025/02/07 12:36:22 by tkomai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,4 @@ int			count_numbers(char *str, char c);
 int			ft_atol(const char *n, t_stacks *s);
 char		*join_args_helper(char *tmp2, char *argv_i, t_stacks *s);
 void		free_stacks(t_stacks *s);
-
 #endif
