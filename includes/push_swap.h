@@ -3,45 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/01 20:50:25 by tsukuru           #+#    #+#             */
-/*   Updated: 2025/02/07 12:36:22 by tkomai           ###   ########.fr       */
+/*   Created: 2026/08/29 00:00:00 by tsukuru           #+#    #+#             */
+/*   Updated: 2026/08/29 00:00:00 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include "../libft/libft.h"
 # include <limits.h>
-# include <stdbool.h>
 # include <stdlib.h>
 # include <unistd.h>
 
+typedef struct s_stack
+{
+	int	*data;
+	int	size;
+}	t_stack;
+
 typedef struct s_stacks
 {
-	int		*a;
-	int		*b;
-	int		a_size;
-	int		b_size;
-	char	*join_args;
-}			t_stacks;
+	t_stack	a;
+	t_stack	b;
+}	t_stacks;
 
-void		check_numbers(t_stacks *s, int i);
-int			is_array_sorted(t_stacks *s);
-void		error_outputs_and_free(t_stacks *s, char *msg);
-void		atoi_numbers(t_stacks *s);
-void		swap(char *str, int *array, int size);
-void		push(char *str, t_stacks *s);
-void		rotate(int *array, int size, char *direction, char *list);
-void		initialize_stacks(int argc, char **argv, t_stacks *s);
-void		create_index(t_stacks *s);
-void		sort_three_elements(t_stacks *s);
-void		sort_four_five_elements(t_stacks *s);
-void		radix_sort(t_stacks *s);
-int			count_numbers(char *str, char c);
-int			ft_atol(const char *n, t_stacks *s);
-char		*join_args_helper(char *tmp2, char *argv_i, t_stacks *s);
-void		free_stacks(t_stacks *s);
+enum e_operation
+{
+	OP_SA,
+	OP_SB,
+	OP_SS,
+	OP_PA,
+	OP_PB,
+	OP_RA,
+	OP_RB,
+	OP_RR,
+	OP_RRA,
+	OP_RRB,
+	OP_RRR
+};
+
+int		ps_parse_arguments(int argc, char **argv, t_stacks *stacks);
+void	ps_initialize(t_stacks *stacks);
+void	ps_free(t_stacks *stacks);
+int		ps_is_sorted(t_stack *stack);
+int		ps_has_duplicates(t_stack *stack);
+int		ps_create_indexes(t_stack *stack);
+void	ps_execute(t_stacks *stacks, int operation, int print);
+void	ps_sort(t_stacks *stacks);
+void	ps_sort_three(t_stacks *stacks);
+int		ps_min_position(t_stack *stack);
+int		ps_max_position(t_stack *stack);
+
 #endif

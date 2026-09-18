@@ -1,78 +1,35 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/12/02 17:19:45 by tsukuru           #+#    #+#              #
-#    Updated: 2025/02/07 11:56:41 by tkomai           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME := push_swap
+BONUS_NAME := checker
+CC := cc
+CFLAGS := -Wall -Wextra -Werror
+CPPFLAGS := -Iincludes
+RM := rm -f
 
-
-# **************************************************************************** #
-#                                   Settings                                   #
-# **************************************************************************** #
-
-CC         = gcc
-CFLAGS     = -Wall -Wextra -Werror
-RM         = rm -rf
-
-# --- libft に関する設定 ---
-LIBFT_DIR  = libft
-LIBFT      = $(LIBFT_DIR)/libft.a
-
-# --- 出力ファイル名 ---
-NAME       = push_swap
-
-# **************************************************************************** #
-#                                 Sources/Objs                                 #
-# **************************************************************************** #
-
-SRC = src/main.c \
-      src/utils_memory.c \
-      src/utils_numbers.c \
-      src/sort.c \
-      src/ft_command.c \
-      libft/ft_atoi.c \
-      libft/ft_memmove.c \
-      libft/ft_putendl_fd.c \
-      libft/ft_strdup.c \
-      libft/ft_strjoin.c \
-      libft/ft_strlcpy.c \
-      libft/ft_strlen.c \
-      libft/ft_strncmp.c
-
-OBJ = $(SRC:.c=.o)
-
-# **************************************************************************** #
-#                                   Targets                                    #
-# **************************************************************************** #
+COMMON_SRCS := src/input.c src/utils.c src/positions.c src/ft_command.c
+PUSH_SRCS := src/main.c src/sort.c $(COMMON_SRCS)
+BONUS_SRCS := src/checker_bonus.c $(COMMON_SRCS)
+PUSH_OBJS := $(PUSH_SRCS:.c=.o)
+BONUS_OBJS := $(BONUS_SRCS:.c=.o)
 
 all: $(NAME)
 
-# --- libft を先にビルドする ---
-$(LIBFT):
-	make -C $(LIBFT_DIR)
+$(NAME): $(PUSH_OBJS)
+	$(CC) $(CFLAGS) $(PUSH_OBJS) -o $@
 
-# --- 最終的に push_swap_program を生成 ---
-$(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) -L$(LIBFT_DIR) -lft
+bonus: $(BONUS_NAME)
 
-# --- 個別に .c -> .o を生成するルール (パターンルール) ---
-%.o: %.c
-	$(CC) $(CFLAGS) -I$(LIBFT_DIR) -c $< -o $@
+$(BONUS_NAME): $(BONUS_OBJS)
+	$(CC) $(CFLAGS) $(BONUS_OBJS) -o $@
 
-# --- 後片付け ---
+%.o: %.c includes/push_swap.h
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
 clean:
-	$(RM) $(OBJ)
-	make -C $(LIBFT_DIR) clean
+	$(RM) $(PUSH_OBJS) $(BONUS_OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
-	make -C $(LIBFT_DIR) fclean
+	$(RM) $(NAME) $(BONUS_NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re

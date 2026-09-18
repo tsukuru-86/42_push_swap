@@ -3,99 +3,109 @@
 /*                                                        :::      ::::::::   */
 /*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkomai <tkomai@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/26 18:42:26 by tsukuru           #+#    #+#             */
-/*   Updated: 2025/02/07 12:23:56 by tkomai           ###   ########.fr       */
+/*   Created: 2026/08/29 00:00:00 by tsukuru           #+#    #+#             */
+/*   Updated: 2026/08/29 00:00:00 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
-int	is_array_sorted(t_stacks *s)
+void	ps_sort_three(t_stacks *stacks)
 {
-	int	i;
+	int	*a;
 
-	i = 0;
-	while (i < s->a_size - 1)
+	a = stacks->a.data;
+	if (a[0] > a[1] && a[0] > a[2])
+		ps_execute(stacks, OP_RA, 1);
+	else if (a[1] > a[0] && a[1] > a[2])
+		ps_execute(stacks, OP_RRA, 1);
+	if (stacks->a.data[0] > stacks->a.data[1])
+		ps_execute(stacks, OP_SA, 1);
+}
+
+static void	move_to_top(t_stacks *stacks, int position, int stack_b)
+{
+	t_stack	*stack;
+	int		up;
+	int		down;
+
+	stack = &stacks->a;
+	if (stack_b)
+		stack = &stacks->b;
+	up = OP_RA + stack_b;
+	down = OP_RRA + stack_b;
+	if (position <= stack->size / 2)
+		while (position-- > 0)
+			ps_execute(stacks, up, 1);
+	else
 	{
-		if (s->a[i] > s->a[i + 1])
-			return (0);
-		i++;
+		position = stack->size - position;
+		while (position-- > 0)
+			ps_execute(stacks, down, 1);
 	}
-	return (1);
 }
 
-void	sort_three_elements(t_stacks *s)
+static void	sort_small(t_stacks *stacks)
 {
-	if (s->a[0] > s->a[1] && s->a[0] > s->a[2])
-		rotate(s->a, s->a_size, "up", "a");
-	else if (s->a[1] > s->a[0] && s->a[1] > s->a[2])
-		rotate(s->a, s->a_size, "down", "a");
-	if (s->a[0] > s->a[1])
-		swap("sa", s->a, s->a_size);
-}
+	int	position;
 
-void	sort_four_five_elements(t_stacks *s)
-{
-	while (s->b_size <= 1)
+	if (stacks->a.size == 2)
+		ps_execute(stacks, OP_SA, 1);
+	while (stacks->a.size > 3)
 	{
-		while (s->a[0] > s->a[1] || (s->a_size > 2 && s->a[0] > s->a[2])
-			|| (s->a_size > 3 && s->a[0] > s->a[3]) || (s->a_size > 4
-				&& s->a[0] > s->a[4]))
+		position = ps_min_position(&stacks->a);
+		move_to_top(stacks, position, 0);
+		ps_execute(stacks, OP_PB, 1);
+	}
+	if (stacks->a.size == 3)
+		ps_sort_three(stacks);
+	while (stacks->b.size > 0)
+		ps_execute(stacks, OP_PA, 1);
+}
+
+static void	sort_chunks(t_stacks *stacks)
+{
+	int	chunk;
+	int	pushed;
+
+	chunk = 14;
+	if (stacks->a.size > 100)
+		chunk = 30;
+	pushed = 0;
+	while (stacks->a.size > 0)
+	{
+		if (stacks->a.data[0] <= pushed)
 		{
-			rotate(s->a, s->a_size, "up", "a");
+			ps_execute(stacks, OP_PB, 1);
+			ps_execute(stacks, OP_RB, 1);
+			pushed++;
 		}
-		push("pb", s);
-	}
-	if (s->b[0] < s->b[1])
-		swap("sb", s->b, s->b_size);
-	if (s->a_size == 2)
-	{
-		if (s->a[0] > s->a[1])
-			swap("sa", s->a, s->a_size);
-	}
-	if (s->a_size == 3)
-		sort_three_elements(s);
-	push("pa", s);
-	push("pa", s);
-}
-
-static int	get_max_bits(t_stacks *s)
-{
-	int	max_bits;
-	int	size;
-
-	max_bits = 0;
-	size = s->a_size - 1;
-	while ((size >> max_bits) != 0)
-		max_bits++;
-	return (max_bits);
-}
-
-void	radix_sort(t_stacks *s)
-{
-	int	i;
-	int	j;
-	int	size;
-	int	max_bits;
-
-	max_bits = get_max_bits(s);
-	j = 0;
-	while (j < max_bits && !is_array_sorted(s))
-	{
-		size = s->a_size;
-		i = 0;
-		while (i < size)
+		else if (stacks->a.data[0] <= pushed + chunk)
 		{
-			if (((s->a[0] >> j) & 1) == 0)
-				push("pb", s);
-			else
-				rotate(s->a, s->a_size, "up", "a");
-			i++;
+			ps_execute(stacks, OP_PB, 1);
+			pushed++;
 		}
-		while (s->b_size > 0)
-			push("pa", s);
-		j++;
+		else
+			ps_execute(stacks, OP_RA, 1);
+	}
+}
+
+void	ps_sort(t_stacks *stacks)
+{
+	int	position;
+
+	if (stacks->a.size <= 5)
+	{
+		sort_small(stacks);
+		return ;
+	}
+	sort_chunks(stacks);
+	while (stacks->b.size > 0)
+	{
+		position = ps_max_position(&stacks->b);
+		move_to_top(stacks, position, 1);
+		ps_execute(stacks, OP_PA, 1);
 	}
 }

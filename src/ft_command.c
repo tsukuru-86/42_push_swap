@@ -5,78 +5,112 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/01 20:37:05 by tsukuru           #+#    #+#             */
-/*   Updated: 2024/12/08 11:21:52 by tsukuru          ###   ########.fr       */
+/*   Created: 2026/08/29 00:00:00 by tsukuru           #+#    #+#             */
+/*   Updated: 2026/08/29 00:00:00 by tsukuru          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
-#include <stdbool.h>
 
-// swap関数
-void	swap(char *str, int *array, int size)
+static void	swap_stack(t_stack *stack)
 {
-	int	tmp;
+	int	temporary;
 
-	if (size <= 0)
+	if (stack->size < 2)
 		return ;
-	tmp = array[0];
-	array[0] = array[1];
-	array[1] = tmp;
-	ft_putendl_fd(str, 1);
+	temporary = stack->data[0];
+	stack->data[0] = stack->data[1];
+	stack->data[1] = temporary;
 }
 
-// push関数
-//pa -> bからa
-void	push(char *str, t_stacks *s)
+static void	push_stack(t_stack *destination, t_stack *source)
 {
-	int	tmp;
+	int	index;
 
-	if (ft_strncmp(str, "pa", 3) == 0)
+	if (source->size == 0)
+		return ;
+	index = destination->size;
+	while (index > 0)
 	{
-		if (s->b_size <= 0)
-			return ;
-		tmp = s->b[0];
-		ft_memmove(s->a + 1, s->a, sizeof(int) * s->a_size);
-		s->a[0] = tmp;
-		s->b_size--;
-		ft_memmove(s->b, s->b + 1, sizeof(int) * s->b_size);
-		s->a_size++;
+		destination->data[index] = destination->data[index - 1];
+		index--;
 	}
-	else if (ft_strncmp(str, "pb", 3) == 0)
-	{
-		if (s->a_size <= 0)
-			return ;
-		tmp = s->a[0];
-		ft_memmove(s->b + 1, s->b, sizeof(int) * s->b_size);
-		s->b[0] = tmp;
-		s->a_size--;
-		ft_memmove(s->a, s->a + 1, sizeof(int) * s->a_size);
-		s->b_size++;
-	}
-	ft_putendl_fd(str, 1);
+	destination->data[0] = source->data[0];
+	destination->size++;
+	index = -1;
+	while (++index + 1 < source->size)
+		source->data[index] = source->data[index + 1];
+	source->size--;
 }
 
-// rotate関数
-void	rotate(int *array, int size, char *direction, char *list)
+static void	rotate_stack(t_stack *stack, int reverse)
 {
-	int	tmp;
+	int	temporary;
+	int	index;
 
-	if (size <= 0)
+	if (stack->size < 2)
 		return ;
-	if (ft_strncmp(direction, "up", 5) == 0)
+	if (reverse)
 	{
-		tmp = array[0];
-		ft_memmove(array, array + 1, sizeof(int) * (size - 1));
-		array[size - 1] = tmp;
-		write(1, "r", 1);
+		temporary = stack->data[stack->size - 1];
+		index = stack->size - 1;
+		while (index > 0)
+		{
+			stack->data[index] = stack->data[index - 1];
+			index--;
+		}
+		stack->data[0] = temporary;
 	}
-	else if (ft_strncmp(direction, "down", 5) == 0)
+	else
 	{
-		tmp = array[size - 1];
-		ft_memmove(array + 1, array, sizeof(int) * (size - 1));
-		array[0] = tmp;
-		write(1, "rr", 2);
+		temporary = stack->data[0];
+		index = 0;
+		while (++index < stack->size)
+			stack->data[index - 1] = stack->data[index];
+		stack->data[stack->size - 1] = temporary;
 	}
-	ft_putendl_fd(list, 1);
+}
+
+static void	write_operation(int operation)
+{
+	const char	*names[11];
+	int			length;
+
+	names[OP_SA] = "sa\n";
+	names[OP_SB] = "sb\n";
+	names[OP_SS] = "ss\n";
+	names[OP_PA] = "pa\n";
+	names[OP_PB] = "pb\n";
+	names[OP_RA] = "ra\n";
+	names[OP_RB] = "rb\n";
+	names[OP_RR] = "rr\n";
+	names[OP_RRA] = "rra\n";
+	names[OP_RRB] = "rrb\n";
+	names[OP_RRR] = "rrr\n";
+	length = 3;
+	if (operation >= OP_RRA)
+		length = 4;
+	write(1, names[operation], length);
+}
+
+void	ps_execute(t_stacks *s, int operation, int print)
+{
+	if (operation == OP_SA || operation == OP_SS)
+		swap_stack(&s->a);
+	if (operation == OP_SB || operation == OP_SS)
+		swap_stack(&s->b);
+	if (operation == OP_PA)
+		push_stack(&s->a, &s->b);
+	if (operation == OP_PB)
+		push_stack(&s->b, &s->a);
+	if (operation == OP_RA || operation == OP_RR)
+		rotate_stack(&s->a, 0);
+	if (operation == OP_RB || operation == OP_RR)
+		rotate_stack(&s->b, 0);
+	if (operation == OP_RRA || operation == OP_RRR)
+		rotate_stack(&s->a, 1);
+	if (operation == OP_RRB || operation == OP_RRR)
+		rotate_stack(&s->b, 1);
+	if (print)
+		write_operation(operation);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   positions.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsukuru <tsukuru@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,28 +12,34 @@
 
 #include "../includes/push_swap.h"
 
-static int	print_error(void)
+int	ps_min_position(t_stack *stack)
 {
-	write(STDERR_FILENO, "Error\n", 6);
-	return (1);
+	int	position;
+	int	index;
+
+	position = 0;
+	index = 1;
+	while (index < stack->size)
+	{
+		if (stack->data[index] < stack->data[position])
+			position = index;
+		index++;
+	}
+	return (position);
 }
 
-int	main(int argc, char **argv)
+int	ps_max_position(t_stack *stack)
 {
-	t_stacks	stacks;
+	int	position;
+	int	index;
 
-	if (argc == 1)
-		return (0);
-	if (!ps_parse_arguments(argc, argv, &stacks))
-		return (print_error());
-	if (ps_has_duplicates(&stacks.a))
-		return (ps_free(&stacks), print_error());
-	if (!ps_is_sorted(&stacks.a))
+	position = 0;
+	index = 1;
+	while (index < stack->size)
 	{
-		if (!ps_create_indexes(&stacks.a))
-			return (ps_free(&stacks), print_error());
-		ps_sort(&stacks);
+		if (stack->data[index] > stack->data[position])
+			position = index;
+		index++;
 	}
-	ps_free(&stacks);
-	return (0);
+	return (position);
 }
